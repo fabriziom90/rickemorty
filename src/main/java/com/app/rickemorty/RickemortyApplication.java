@@ -1,0 +1,53 @@
+package com.app.rickemorty;
+
+import java.util.Scanner;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.app.rickemorty.service.CharacterService;
+
+@SpringBootApplication
+public class RickemortyApplication {
+
+	public static void main(String[] args) {
+//		Versioni nuove
+//		SpringApplication.run(RickemortyApplication.class, args);
+		System.out.println("STEP 1: CARICAMENTO CONTESTO (viene letto il file beans.xml)");
+		ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/beans.xml");
+		
+		System.out.println("CONTESTO CARICATO CORRETTAMENTE");
+		System.out.println("Step 7: il main prende il controllo e svolte le operazioni utilizzando i beans");
+		CharacterService service = (CharacterService) context.getBean("characterService"); //vado a richiamare il bean con proprietà name=characterService
+		
+		Scanner scanner = new Scanner(System.in);
+		
+		while(true) {
+			System.out.println("\n--- GESTIONALE Rick & Morty---\n");
+			System.out.println("1. Importa personaggio da API (inserisci ID)");
+			System.out.println("2. Crea personaggio nel DB locale");
+			System.out.println("3. Elenco completo nel DB");
+			System.out.println("0. Esci");
+			
+			int scelta = scanner.nextInt();
+			if(scelta == 0) break;
+			switch(scelta) {
+			case 1:
+				System.out.println("ID da scaricare: ");
+				service.importCharacterFromRickeAndMorty(scanner.nextLong());
+				break;
+			case 2:
+				System.out.println("Nome da cercare:");
+				service.searchLocal(scanner.next());
+				break;
+			}
+		}
+		
+		service.importCharacterFromRickeAndMorty(5L);
+		service.importCharacterFromRickeAndMorty(6L);
+		
+		service.printLocals();
+	}
+
+}
