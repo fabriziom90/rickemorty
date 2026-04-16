@@ -26,7 +26,7 @@ public class RickemortyApplication {
 		while(true) {
 			System.out.println("\n--- GESTIONALE Rick & Morty---\n");
 			System.out.println("1. Importa personaggio da API (inserisci ID)");
-			System.out.println("2. Crea personaggio nel DB locale");
+			System.out.println("2. Cerca personaggio nel DB locale");
 			System.out.println("3. Elenco completo nel DB");
 			System.out.println("0. Esci");
 			
@@ -41,6 +41,9 @@ public class RickemortyApplication {
 				System.out.println("Nome da cercare:");
 				service.searchLocal(scanner.next());
 				break;
+			case 3:
+				System.out.println("Elenco completo dei personaggi salvati in locale");
+				service.printLocals();
 			}
 		}
 		
