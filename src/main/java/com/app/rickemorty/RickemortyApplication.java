@@ -50,9 +50,6 @@ public class RickemortyApplication {
 					service.printLocals();
 			}
 			
-			service.importCharacterFromRickeAndMorty(5L);
-			service.importCharacterFromRickeAndMorty(6L);
-			
 			service.printLocals();
 		}
 		
