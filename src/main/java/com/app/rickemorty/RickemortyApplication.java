@@ -38,8 +38,15 @@ public class RickemortyApplication {
 			}
 			switch(scelta) {
 				case 1:
-					System.out.println("ID da scaricare: ");
-					service.importCharacterFromRickeAndMorty(scanner.nextLong());
+					boolean inserted = false;
+					while(!inserted) {
+						System.out.println("ID da scaricare: ");
+						inserted = service.importCharacterFromRickeAndMorty(scanner.nextLong());
+						
+						if(!inserted) {
+							System.out.println("Attenzione: L'id digitato è già presente nel database. Riprovare");
+						}
+					}
 					break;
 				case 2:
 					System.out.println("Nome da cercare:");

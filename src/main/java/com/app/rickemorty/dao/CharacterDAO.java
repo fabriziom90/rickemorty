@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -81,14 +82,20 @@ public class CharacterDAO {
 	}
 	
 	public void save(Character c) {
-		String sql = "INSERT INTO characters (id, name, species) VALUES (?, ?, ?)";
-		
+		try {
+			String sql = "INSERT INTO characters (id, name, species) VALUES (?, ?, ?)";
+			
 //		Versioni più vecchie
-		Object[] params = new Object[] {c.getId(), c.getName(), c.getSpecies()};
-		jdbcTemplate.update(sql, params);
-		
+			Object[] params = new Object[] {c.getId(), c.getName(), c.getSpecies()};
+			jdbcTemplate.update(sql, params);
+			
 //		Versioni più recenti
 //		jdbcTemplate.update(sql, c.getId(), c.getName(), c.getSpecies());
+			
+		}
+		catch(DuplicateKeyException e) {
+			throw new IllegalArgumentException("ID Duplicato");
+		}
 	}
 	
 	public void update(Long id, Character c) {

@@ -35,7 +35,7 @@ public class CharacterServiceImpl implements CharacterProvider {
 		System.out.println("Step 6: Spring ha collegato il RestTemplate al Service (injection)");
 	}
 	
-	public void importCharacterFromRickeAndMorty(Long id) {
+	public boolean importCharacterFromRickeAndMorty(Long id) {
 		String url = "https://rickandmortyapi.com/api/character/" + id;
 		
 		Map<String, Object> response = restTemplate.getForObject(url, Map.class);
@@ -47,9 +47,21 @@ public class CharacterServiceImpl implements CharacterProvider {
 			String species = (String) response.get("species");
 			
 			Character c = new Character(id, name, species);
-			characterDao.save(c);
-			System.out.println("Importato con successo");
+			try {
+				characterDao.save(c);
+				System.out.println("Importato con successo");
+				return true;
+			}
+			catch(IllegalArgumentException e) {
+				if("ID Duplicato".equals(e.getMessage())) {
+					return false;
+				}
+				throw e;
+			}
+			
 		}
+		
+		return false;
 	}
 	
 	public void searchLocal(String name) {
