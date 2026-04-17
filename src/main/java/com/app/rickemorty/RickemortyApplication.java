@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.app.rickemorty.service.CharacterService;
+import com.app.rickemorty.service.CharacterServiceImpl;
 
 @SpringBootApplication
 public class RickemortyApplication {
@@ -19,7 +19,7 @@ public class RickemortyApplication {
 		
 		System.out.println("CONTESTO CARICATO CORRETTAMENTE");
 		System.out.println("Step 7: il main prende il controllo e svolte le operazioni utilizzando i beans");
-		CharacterService service = (CharacterService) context.getBean("characterService"); //vado a richiamare il bean con proprietà name=characterService
+		CharacterServiceImpl service = (CharacterServiceImpl) context.getBean("internalService"); //vado a richiamare il bean con proprietà name=characterService
 		
 		Scanner scanner = new Scanner(System.in);
 		
@@ -31,26 +31,33 @@ public class RickemortyApplication {
 			System.out.println("0. Esci");
 			
 			int scelta = scanner.nextInt();
-			if(scelta == 0) break;
-			switch(scelta) {
-			case 1:
-				System.out.println("ID da scaricare: ");
-				service.importCharacterFromRickeAndMorty(scanner.nextLong());
+			if(scelta == 0) {
+				System.out.println("Uscita in corso...");
 				break;
-			case 2:
-				System.out.println("Nome da cercare:");
-				service.searchLocal(scanner.next());
-				break;
-			case 3:
-				System.out.println("Elenco completo dei personaggi salvati in locale");
-				service.printLocals();
+				
 			}
+			switch(scelta) {
+				case 1:
+					System.out.println("ID da scaricare: ");
+					service.importCharacterFromRickeAndMorty(scanner.nextLong());
+					break;
+				case 2:
+					System.out.println("Nome da cercare:");
+					service.searchLocal(scanner.next());
+					break;
+				case 3:
+					System.out.println("Elenco completo dei personaggi salvati in locale");
+					service.printLocals();
+			}
+			
+			service.importCharacterFromRickeAndMorty(5L);
+			service.importCharacterFromRickeAndMorty(6L);
+			
+			service.printLocals();
 		}
 		
-		service.importCharacterFromRickeAndMorty(5L);
-		service.importCharacterFromRickeAndMorty(6L);
+		System.out.println("Arrivederci");
 		
-		service.printLocals();
 	}
 
 }

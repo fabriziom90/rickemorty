@@ -25,9 +25,12 @@
         <property name="jdbcTemplate" ref="jdbcTemplate" />
     </bean>
 
-    <bean id="characterService" class="com.app.rickemorty.service.CharacterService">
+    <bean id="internalService" class="com.app.rickemorty.service.CharacterServiceImpl">
         <property name="characterDAO" ref="characterDAO" />
         <property name="restTemplate" ref="restTemplate" />
     </bean>
-
+	
+	<bean id="businessClient" class="com.app.rickemorty.client.service.BusinessClientService">
+		<property name="provider" ref="internalService"/>
+	</bean>
 </beans>
